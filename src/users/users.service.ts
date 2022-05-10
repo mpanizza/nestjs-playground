@@ -17,6 +17,7 @@ export class UsersService {
 
   async findAll() {
     const users = await this.repository.find();
+    console.log("Loaded users: ", users)
     return `This action returns all users: ${users}`;
   }
 
