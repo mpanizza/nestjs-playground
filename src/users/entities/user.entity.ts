@@ -7,11 +7,11 @@ import {
  
  import { Role } from "../../roles/entities/role.entity"
  
- @Entity()
+ @Entity({ name: 'users'})
 export class User {
 
     @PrimaryGeneratedColumn()
-    id: number
+    id?: number
 
     @Column()
     firstName: string
