@@ -17,7 +17,7 @@ export class UsersService {
 
   async findAll() {
     const users = await this.repository.find();
-    return `This action returns all users: ${users} }`;
+    return `This action returns all users: ${users}`;
   }
 
   findOne(id: number) {
