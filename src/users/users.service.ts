@@ -9,14 +9,15 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User) public readonly repository: Repository<User>,
-  ) {}
+  ) {  }
   
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    const users = await this.repository.find();
+    return `This action returns all users: ${users} }`;
   }
 
   findOne(id: number) {
