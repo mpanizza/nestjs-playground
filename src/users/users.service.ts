@@ -21,8 +21,10 @@ export class UsersService {
     return users;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = await this.repository.findOne(id);
+    console.log("Loaded users: " + JSON.stringify(user) )
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

@@ -15,12 +15,16 @@ export class RolesService {
     return 'This action adds a new role';
   }
 
-  findAll() {
-    return `This action returns all roles`;
+  async findAll() {
+    const roles = await this.repository.find();
+    console.log("Loaded roles: " + JSON.stringify(roles) )
+    return roles;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} role`;
+  async findOne(id: number) {
+    const role = await this.repository.findOne(id);
+    console.log("Loaded roles: " + JSON.stringify(role) )
+    return role;
   }
 
   update(id: number, updateRoleDto: UpdateRoleDto) {
