@@ -23,7 +23,7 @@ export class RolesService {
 
   async findOne(id: number) {
     const role = await this.repository.findOne(id);
-    console.log("Loaded roles: " + JSON.stringify(role) )
+    console.log("Role " + id + " is: " + JSON.stringify(role) )
     return role;
   }
 

@@ -4,12 +4,15 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { Role } from '../roles/entities/role.entity';
+
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) public readonly repository: Repository<User>,
-  ) {  }
+    @InjectRepository(Role) public readonly roleRepository: Repository<User>,
+  ) { }
   
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
@@ -22,8 +25,10 @@ export class UsersService {
   }
 
   async findOne(id: number) {
-    const user = await this.repository.findOne(id);
-    console.log("Loaded users: " + JSON.stringify(user) )
+    const user =  await this.repository.findOne(id, {
+      relations: ['role']
+    });
+    console.log("User " + id + " is: " + JSON.stringify(user) )
     return user;
   }
 
