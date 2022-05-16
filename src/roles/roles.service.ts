@@ -4,11 +4,13 @@ import { Repository } from 'typeorm';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
+import { User } from './../users/entities/user.entity';
 
 @Injectable()
 export class RolesService {
   constructor(
     @InjectRepository(Role) public readonly repository: Repository<Role>,
+    @InjectRepository(User) public readonly userRepository: Repository<User>,
   ) {}
   
   create(createRoleDto: CreateRoleDto) {
@@ -22,7 +24,9 @@ export class RolesService {
   }
 
   async findOne(id: number) {
-    const role = await this.repository.findOne(id);
+    const role = await this.repository.findOne(id,  {
+      relations: ['users']
+    });
     console.log("Role " + id + " is: " + JSON.stringify(role) )
     return role;
   }
