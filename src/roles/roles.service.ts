@@ -34,7 +34,12 @@ export class RolesService {
     return role;
   }
 
-  update(id: number, updateRoleDto: UpdateRoleDto) {
+  async update(id: number, updateRoleDto: UpdateRoleDto) {
+    const role =  await this.repository.findOne(id);
+    console.log("DTO  " + JSON.stringify(updateRoleDto));
+    role.name = (updateRoleDto.name == undefined) ? role.name : updateRoleDto.name
+    console.log(`name ${updateRoleDto.name}`);
+    await this.repository.save(role);
     return `This action updates a #${id} role`;
   }
 
