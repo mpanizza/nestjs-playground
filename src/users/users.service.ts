@@ -15,10 +15,17 @@ export class UsersService {
   ) { }
   
   async create(createUserDto: CreateUserDto) {
+    const roleReq = await this.roleRepository.findOne(createUserDto.roleId,  {
+      relations: ['users']
+    })
     const user = this.repository.create(createUserDto);
+    // user.role = roleReq;
     await this.repository.save(user);
-    console.log("User DTO " + JSON.stringify(createUserDto) + " | " +JSON.stringify(user) );
+    console.log( "User DTO : "+ (createUserDto instanceof CreateUserDto) + " = " + JSON.stringify(createUserDto));
+    console.log( "User object : "+ (user instanceof User) + " = " + JSON.stringify(user));
+    console.log( "requested role : "+ (roleReq instanceof Role) + " = " + JSON.stringify(roleReq));
     return 'This action adds a new user' + JSON.stringify(createUserDto);
+    ;
   }
 
   async findAll() {
@@ -35,11 +42,15 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user =  await this.repository.findOne(id, {
+      relations: ['role']
+    });
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.repository.delete(id);
     return `This action removes a #${id} user`;
   }
 }

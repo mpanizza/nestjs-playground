@@ -38,7 +38,8 @@ export class RolesService {
     return `This action updates a #${id} role`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.repository.delete(id);
     return `This action removes a #${id} role`;
   }
 }
