@@ -14,8 +14,11 @@ export class UsersService {
     @InjectRepository(Role) public readonly roleRepository: Repository<User>,
   ) { }
   
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const user = this.repository.create(createUserDto);
+    await this.repository.save(user);
+    console.log("User DTO " + JSON.stringify(createUserDto) + " | " +JSON.stringify(user) );
+    return 'This action adds a new user' + JSON.stringify(createUserDto);
   }
 
   async findAll() {
