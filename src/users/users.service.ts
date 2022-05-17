@@ -45,7 +45,16 @@ export class UsersService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user =  await this.repository.findOne(id, {
       relations: ['role']
-    });
+    }); 
+    console.log("DTO  " + JSON.stringify(updateUserDto));
+    user.firstName = (updateUserDto.firstName == undefined) ? user.firstName : updateUserDto.firstName
+    console.log(`firstName ${updateUserDto.firstName}`);
+    user.lastName = (updateUserDto.lastName == undefined) ? user.lastName : updateUserDto.lastName
+    console.log(`lastName ${updateUserDto.lastName}`);
+    user.eMail = (updateUserDto.eMail == undefined) ? user.eMail : updateUserDto.eMail
+    console.log(`eMail ${updateUserDto.eMail}`);
+    console.log(`roleId ${updateUserDto.roleId}`);
+    await this.repository.save(user);
     return `This action updates a #${id} user`;
   }
 
