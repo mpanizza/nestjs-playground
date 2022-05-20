@@ -41,10 +41,14 @@ export class RolesService {
 
   async update(id: number, updateRoleDto: UpdateRoleDto): Promise<Role>  {
     const role =  await this.repository.findOne(id);
-    console.log("DTO  " + JSON.stringify(updateRoleDto));
-    role.name = (updateRoleDto.name == undefined) ? role.name : updateRoleDto.name
-    console.log(`name ${updateRoleDto.name}`);
-    return this.repository.save(role);
+
+    if (!role) {
+      throw new NotFoundException(`Role ${id} not found`);
+    }
+
+    return this.repository
+      .update(id, updateRoleDto)
+      .then(() => this.repository.findOne(id));
   }
 
   async remove(id: number): Promise<Role> {

@@ -55,16 +55,10 @@ export class UsersService {
       throw new NotFoundException(`User ${id} not found`);
     }
 
-    console.log("DTO  " + JSON.stringify(updateUserDto));
-    user.firstName = (updateUserDto.firstName == undefined) ? user.firstName : updateUserDto.firstName
-    console.log(`firstName ${updateUserDto.firstName}`);
-    user.lastName = (updateUserDto.lastName == undefined) ? user.lastName : updateUserDto.lastName
-    console.log(`lastName ${updateUserDto.lastName}`);
-    user.eMail = (updateUserDto.eMail == undefined) ? user.eMail : updateUserDto.eMail
-    console.log(`eMail ${updateUserDto.eMail}`);
-    console.log(`roleId ${updateUserDto.roleId}`);
-    return this.repository.save(user);
-  }
+    return this.repository
+      .update(id, updateUserDto)
+      .then(() => this.repository.findOne(id));
+}
 
   async remove(id: number): Promise<User> {
     const deletedUser =  await this.repository.findOne(id, {
@@ -74,7 +68,7 @@ export class UsersService {
     if (!deletedUser) {
       throw new NotFoundException(`User ${id} not found`);
     }
-    
+
     await this.repository.delete(id);
     return deletedUser;
   }
