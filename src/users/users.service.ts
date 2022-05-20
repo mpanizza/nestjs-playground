@@ -25,7 +25,6 @@ export class UsersService {
     console.log( "User object : "+ (user instanceof User) + " = " + JSON.stringify(user));
     console.log( "requested role : "+ (roleReq instanceof Role) + " = " + JSON.stringify(roleReq));
     return 'This action adds a new user' + JSON.stringify(createUserDto);
-    ;
   }
 
   async findAll() {
