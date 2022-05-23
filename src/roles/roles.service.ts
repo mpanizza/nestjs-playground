@@ -27,8 +27,9 @@ export class RolesService {
   }
 
   async findOne(id: number): Promise<Role> {
-    const role = await this.repository.findOne(id,  {
-      relations: ['users']
+    const role = await this.repository.findOne({
+      where: { id: id },
+      relations: {users: true}  
     });
 
     if (!role) {
@@ -40,7 +41,10 @@ export class RolesService {
   }
 
   async update(id: number, updateRoleDto: UpdateRoleDto): Promise<Role>  {
-    const role =  await this.repository.findOne(id);
+    const role =  await this.repository.findOne({
+      where: { id: id },
+      relations: {users: true} 
+    });
 
     if (!role) {
       throw new NotFoundException(`Role ${id} not found`);
@@ -48,12 +52,16 @@ export class RolesService {
 
     return this.repository
       .update(id, updateRoleDto)
-      .then(() => this.repository.findOne(id));
+      .then(() => this.repository.findOne({
+        where: { id: id },
+        relations: {users: true}  
+      }));
   }
 
   async remove(id: number): Promise<Role> {
-    const deletedRole =  await this.repository.findOne(id, {
-      relations: ['users']
+    const deletedRole =  await this.repository.findOne({
+      where: { id: id },
+      relations: {users: true} 
     });
 
     if (!deletedRole) {

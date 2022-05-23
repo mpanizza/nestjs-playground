@@ -15,8 +15,8 @@ export class UsersService {
   ) { }
   
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const roleReq = await this.roleRepository.findOne(createUserDto.roleId,  {
-      relations: ['users']
+    const roleReq = await this.roleRepository.findOneBy({
+      id: createUserDto.roleId
     })
     const user = this.repository.create(createUserDto);
     // user.role = roleReq;
@@ -34,9 +34,10 @@ export class UsersService {
   }
 
   async findOne(id: number): Promise <User> {
-    const user =  await this.repository.findOne(id, {
-      relations: ['role']
-    });
+    const user =  await this.repository.findOne({
+      where: { id: id },
+      relations: {role: true}
+    }) ;
 
     if (!user) {
       throw new NotFoundException(`User ${id} not found`);
@@ -47,8 +48,9 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise <User> {
-    const user =  await this.repository.findOne(id, {
-      relations: ['role']
+    const user =  await this.repository.findOne( {
+      where: { id: id },
+      relations: {role: true}
     }); 
 
     if (!user) {
@@ -57,13 +59,17 @@ export class UsersService {
 
     return this.repository
       .update(id, updateUserDto)
-      .then(() => this.repository.findOne(id));
+      .then(() => this.repository.findOne({
+        where: { id: id },
+        relations: {role: true}  
+      }));
 }
 
   async remove(id: number): Promise<User> {
-    const deletedUser =  await this.repository.findOne(id, {
-      relations: ['role']
-    });
+    const deletedUser =  await this.repository.findOne({
+      where: { id: id },
+      relations: {role: true}  
+  });
 
     if (!deletedUser) {
       throw new NotFoundException(`User ${id} not found`);
