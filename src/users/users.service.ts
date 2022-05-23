@@ -61,9 +61,19 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(`User ${id} not found`);
     }
+    const roleReq = await this.roleRepository.findOneBy({
+      id: updateUserDto.roleId
+    })
+    
+    const userUpdate = this.repository.create({
+      firstName: updateUserDto.firstName,
+      lastName: updateUserDto.lastName,
+      eMail: updateUserDto.eMail,
+      role: roleReq
+    });
 
     return this.repository
-      .update(id, updateUserDto)
+      .update(id, userUpdate)
       .then(() => this.repository.findOne({
         where: { id: id },
         relations: {role: true}  
