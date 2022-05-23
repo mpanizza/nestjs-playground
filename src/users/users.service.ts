@@ -18,7 +18,12 @@ export class UsersService {
     const roleReq = await this.roleRepository.findOneBy({
       id: createUserDto.roleId
     })
-    const user = this.repository.create(createUserDto);
+    const user = this.repository.create({
+      firstName: createUserDto.firstName,
+      lastName: createUserDto.lastName,
+      eMail: createUserDto.eMail,
+      role: roleReq
+    });
     // user.role = roleReq;
     await this.repository.save(user);
     console.log( "User DTO : "+ (createUserDto instanceof CreateUserDto) + " = " + JSON.stringify(createUserDto));
